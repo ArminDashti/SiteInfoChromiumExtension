@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
 name: caveman
-=======
-name: Caveman
->>>>>>> 906697784bf2b87dcec75da4d737cf6e7ba6dcb8
 description: >-
   Ultra-compressed communication mode that cuts output tokens while keeping technical accuracy. Levels: lite, full, ultra and the wenyan variants. Use for /caveman, "caveman mode", "talk like caveman", "be brief" or "less tokens".
 metadata:
