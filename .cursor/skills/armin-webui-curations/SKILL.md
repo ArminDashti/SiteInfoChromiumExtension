@@ -13,11 +13,7 @@ description: >-
   or '/extract-design'.
 disable-model-invocation: false
 metadata:
-  version: 2.0.0
   author: "Armin Dashti"
-  category: webui
-  tags: [webui, design, forms, design-tokens, design-system, about-me, standards, curations]
-  last_updated: "2026-10-09 17:33:09"
   uuid: 85159c7b-e318-458f-928d-08465bd037a9
 ---
 
