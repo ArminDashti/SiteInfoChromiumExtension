@@ -26,3 +26,25 @@
 
 # auto-managed large-file section (>5MB)
 # (paths appended by commit-push-to-github)
+
+# hygiene
+node_modules/
+dist/
+build/
+bin/
+obj/
+.venv/
+__pycache__/
+*.log
+logs/
+.env
+.env.*
+*.tsbuildinfo
+.cache/
+coverage/
+*.zip
+*.7z
+graphify-out/
+.gitnexus/
+!.env.example
+/.cursor/skills/caveman-setup/SKILL.md
