@@ -1,5 +1,5 @@
 ---
-name: Loopx
+name: loopx
 description: >-
   Inspect LoopX state, or start concrete project work when arguments are provided.
 metadata:
