@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Site Info</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <p class="eyebrow">Connected to</p>
+    <p id="host" class="host" title="">—</p>
+  </header>
+
+  <ul class="facts">
+    <li class="row">
+      <span class="icon icon-ip">📍</span>
+      <div class="text">
+        <span class="label">IP Address</span>
+        <span class="value" id="ip">…</span>
+      </div>
+      <button class="copy" data-copy="ip" title="Copy">⧉</button>
+    </li>
+    <li class="row">
+      <span class="icon icon-isp">🏢</span>
+      <div class="text">
+        <span class="label">ISP</span>
+        <span class="value" id="isp">…</span>
+      </div>
+      <button class="copy" data-copy="isp" title="Copy">⧉</button>
+    </li>
+    <li class="row">
+      <span class="icon icon-country" id="flag" title="Country flag">🌍</span>
+      <div class="text">
+        <span class="label">Country</span>
+        <span class="value" id="country">…</span>
+      </div>
+      <button class="copy" data-copy="country" title="Copy">⧉</button>
+    </li>
+    <li class="row">
+      <span class="icon icon-load">🕐</span>
+      <div class="text">
+        <span class="label">Load time</span>
+        <span class="value" id="load-time">…</span>
+      </div>
+      <button class="copy" data-copy="load-time" title="Copy">⧉</button>
+    </li>
+  </ul>
+
+  <p id="error" class="error" hidden></p>
+  <script src="popup.js"></script>
+</body>
+</html>
