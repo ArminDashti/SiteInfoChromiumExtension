@@ -97,6 +97,33 @@ function formatLoadTime(ms) {
   return `${(ms / 1000).toFixed(2)} s`;
 }
 
+const SITE_CACHE_PREFIX = "site:";
+const SITE_CACHE_TTL_MS = 8 * 24 * 60 * 60 * 1000; // 8 days
+
+async function getCachedSiteInfo(hostname) {
+  const key = SITE_CACHE_PREFIX + hostname;
+  const cached = (await chrome.storage.local.get(key))[key];
+  if (cached && Date.now() - cached.ts < SITE_CACHE_TTL_MS) return cached.data;
+  return null;
+}
+
+async function cacheSiteInfo(hostname, data) {
+  const key = SITE_CACHE_PREFIX + hostname;
+  await chrome.storage.local.set({ [key]: { ts: Date.now(), data } });
+}
+
+async function lookupSiteInfo(hostname) {
+  const cached = await getCachedSiteInfo(hostname);
+  if (cached) return cached;
+
+  const ip = await resolveIp(hostname);
+  if (!ip) return null;
+  const { isp, country, flag, cc } = await geoForIp(ip);
+  const data = { ip, isp, country, flag, cc };
+  await cacheSiteInfo(hostname, data);
+  return data;
+}
+
 function setError(message) {
   const el = $("error");
   el.hidden = !message;
@@ -114,11 +141,7 @@ async function main() {
     setError("No active tab.");
     return;
   }
-
   const hostname = hostnameFromUrl(tab.url);
-  $("host").textContent = hostname || tab.url;
-  $("host").title = tab.url;
-
   if (!hostname) {
     setField("ip", "—");
     setField("isp", "—");
@@ -130,14 +153,14 @@ async function main() {
   }
 
   try {
-    const [ip, loadMs] = await Promise.all([
-      resolveIp(hostname),
+    const [info, loadMs] = await Promise.all([
+      lookupSiteInfo(hostname),
       loadTimeMs(tab.id).catch(() => null),
     ]);
 
     setField("load-time", formatLoadTime(loadMs));
 
-    if (!ip) {
+    if (!info) {
       setField("ip", "—");
       setField("isp", "—");
       setField("country", "—");
@@ -146,14 +169,12 @@ async function main() {
       return;
     }
 
-    setField("ip", ip);
-
-    const { isp, country, flag, cc } = await geoForIp(ip);
-    setField("isp", isp);
-    setField("country", country);
-    if (flag && flag !== "🌍") {
-      $("flag").textContent = flag;
-      setActionFlagIcon(cc).catch(() => {});
+    setField("ip", info.ip);
+    setField("isp", info.isp);
+    setField("country", info.country);
+    if (info.flag && info.flag !== "🌍") {
+      $("flag").textContent = info.flag;
+      setActionFlagIcon(info.cc).catch(() => {});
     }
   } catch (err) {
     setError(err.message || "Something went wrong.");
